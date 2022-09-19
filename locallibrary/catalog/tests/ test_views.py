@@ -158,3 +158,44 @@ class AuthorListViewTest(TestCase):
                 borrower=test_user2,
                 status='o',
             )
+
+
+from django.test import TestCase
+
+from catalog.models import AuthorCreate
+
+class AuthorListViewTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        number_of_authors = 13
+
+        for author_id in range(number_of_authors):
+            Author.objects.create(
+                first_name=f'Christian {author_id}',
+                last_name=f'Surname {author_id}',
+            )
+
+    def test_view_url_exists_at_desired_location(self):
+        response = self.client.get('/catalog/author/create')
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_url_accessible_by_name(self):
+        response = self.client.get(reverse('author-create'))
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_uses_correct_template(self):
+        response = self.client.get(reverse('author'))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'author_form.html')
+
+    def test_redirects_to_author_detail_on_success(self):
+        login = self.client.login(username='membep', password='ffgg1234')
+        context = {
+            'first_name': 'Alefd',
+            'last_name': 'Tffff',
+            'date_of_birth': '12.12.2001',
+            'date_of_death': '12.03.2022',
+        }
+        response = self.client.post(reverse('author-create', kwargs={'pk': self.test_author1.pk, }),
+                                    {'context': context})
+        self.assertRedirects(response, reverse('author-detail'))

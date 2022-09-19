@@ -129,7 +129,7 @@ class AuthorCreate(PermissionRequiredMixin, CreateView):
 class AuthorUpdate(PermissionRequiredMixin, UpdateView):
     permission_required = 'catalog.can_mark_returned'
     model = Author
-    fields = '__all__' # Not recommended (potential security issue if more fields added)
+    fields = '__all__'  # Not recommended (potential security issue if more fields added)
     template_name = 'author_form.html'
 
 
@@ -138,3 +138,24 @@ class AuthorDelete(PermissionRequiredMixin, DeleteView):
     model = Author
     success_url = reverse_lazy('authors')
     template_name = 'author_confirm_delete.html'
+
+
+class BookCreate(PermissionRequiredMixin, CreateView):
+    permission_required = 'catalog.can_mark_returned'
+    model = Book
+    fields = ['title', 'author', 'summary', 'isbn', 'genre']
+    template_name = 'book_form.html'
+
+
+class BookUpdate(PermissionRequiredMixin, UpdateView):
+    permission_required = 'catalog.can_mark_returned'
+    model = Book
+    fields = '__all__'
+    template_name = 'book_form.html'
+
+
+class BookDelete(PermissionRequiredMixin, DeleteView):
+    permission_required = 'catalog.can_mark_returned'
+    model = Book
+    success_url = reverse_lazy('books')
+    template_name = 'book_confirm_delete.html'
