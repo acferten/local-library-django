@@ -8,7 +8,6 @@ from django.urls import reverse_lazy
 
 from catalog.models import Author
 
-
 from catalog.forms import RenewBookForm
 import datetime
 
