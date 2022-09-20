@@ -143,7 +143,7 @@ class AuthorDelete(PermissionRequiredMixin, DeleteView):
 class BookCreate(PermissionRequiredMixin, CreateView):
     permission_required = 'catalog.can_mark_returned'
     model = Book
-    fields = ['title', 'author', 'summary', 'isbn', 'genre']
+    fields = '__all__'
     template_name = 'book_form.html'
 
 
